@@ -17,27 +17,29 @@ import qualified Farms
 import qualified LumberMills
 import qualified Peasants
 import qualified Utils
-import qualified Resources
+import qualified Resource
 
 data Kingdom =
   Kingdom
   { population :: Peasants.Peasants
   , farms :: Farms.Farms
   , lumberMills :: LumberMills.LumberMills
-  , food :: Resources.Food
-  , wood :: Resources.Wood
+  , food :: Resource.FoodStorage
+  , wood :: Resource.WoodStorage
   }
 
 instance Show Kingdom where
   show k = unpack $
-       "Food: " <> "(" <> Utils.showWithSign foodConsumption <> ") " <> food'
-    <> " | Wood: " <> "(" <> Utils.showWithSign lumberConsumption <> ") " <> wood'
+       "Food: " <> "(" <> Utils.showWithSign foodConsumption <> ") " <> foodAmount <> "/" <> foodMax
+    <> " | Wood: " <> "(" <> Utils.showWithSign lumberConsumption <> ") " <> woodAmount <> "/" <> woodMax
     <> " | Population: " <> population'
     <> " | Farms: " <> farms'
     <> " | Lumber Mills: " <> lumberMills'
      where
-       food' = Utils.showText (food k)
-       wood' = Utils.showText (wood k)
+       foodAmount = Utils.showText . Resource.amount $ food k
+       foodMax = Utils.showText . Resource.maxAmount $ food k
+       woodAmount = Utils.showText . Resource.amount $ wood k
+       woodMax = Utils.showText . Resource.maxAmount $ wood k
        foodConsumption = Farms.farmNetProduction (farms k) (population k)
        lumberConsumption = LumberMills.lumberMillNetProduction (lumberMills k)
        population' = Utils.showText (population k)
@@ -50,45 +52,48 @@ initKingdom =
   { population = Peasants.initPeasants
   , farms = Farms.initFarms
   , lumberMills = LumberMills.initLumberMills
-  , food = 0
-  , wood = 0
+  , food = Resource.initFoodStorage
+  , wood = Resource.initWoodStorage
   }
 
 addFarm :: Kingdom -> Kingdom
 addFarm k =
-  if wood k < 10 then k
-  else
-    k
-    { farms = Farms.incrementFarms (farms k)
-    , wood = wood k - 10
-    }
+  case Resource.consumeResource (wood k) 10 of
+    Left _ -> k
+    Right newWood ->
+      k
+      { farms = Farms.incrementFarms (farms k)
+      , wood = newWood
+      }
 
 addLumberMill :: Kingdom -> Kingdom
 addLumberMill k = 
-  if wood k < 100 then k
-  else
-    k
-    { lumberMills = LumberMills.incrementLumberMills $ lumberMills k
-    , wood = wood k - 100
-    }
+  case Resource.consumeResource (wood k) 100 of
+    Left _ -> k
+    Right newWood ->
+      k
+      { lumberMills = LumberMills.incrementLumberMills $ lumberMills k
+      , wood = newWood
+      }
 
 addPeasant :: Kingdom -> Kingdom
 addPeasant k =
-  if food k < 10 then k
-  else
-    k
-    { population = Peasants.birthOne $ population k
-    , food = food k - 10
-    }
+  case Resource.consumeResource (food k) 10 of
+    Left _ -> k
+    Right newFood ->
+      k
+      { population = Peasants.birthOne $ population k
+      , food = newFood
+      }
 
 processKingdom :: Kingdom -> Kingdom
 processKingdom k =
   let
-    availableFood = (+ food k) $ Farms.farmNetProduction (farms k) (population k)
-    newFood = Resources.processFood availableFood
+    availableFood = (+ (Resource.amount $ food k)) $ Farms.farmNetProduction (farms k) (population k)
+    newFood = Resource.processFood (food k) availableFood
     newPopulation = Peasants.processPopulation (population k) availableFood
-    availableWood = (+ wood k) $ LumberMills.lumberMillNetProduction (lumberMills k)
-    newWood = Resources.processWood availableWood
+    availableWood = (+ (Resource.amount $ wood k)) $ LumberMills.lumberMillNetProduction (lumberMills k)
+    newWood = Resource.processWood (wood k) availableWood
   in
     k
     { food = newFood

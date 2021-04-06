@@ -9,7 +9,7 @@ module LumberMills
 import Data.Int (Int32)
 
 import qualified Peasants
-import qualified Resources
+import qualified Resource
 
 newtype LumberMills =
   LumberMills
@@ -25,10 +25,10 @@ initLumberMills =
   { count = 1
   }
 
-lumberMillProduction :: LumberMills -> Resources.Wood
-lumberMillProduction = Resources.Wood . (*2) . count
+lumberMillProduction :: LumberMills -> Resource.Wood
+lumberMillProduction = Resource.Wood . (*2) . count
 
-lumberMillNetProduction :: LumberMills -> Resources.Wood
+lumberMillNetProduction :: LumberMills -> Resource.Wood
 lumberMillNetProduction = lumberMillProduction
 
 incrementLumberMills :: LumberMills -> LumberMills

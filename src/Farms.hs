@@ -9,7 +9,7 @@ module Farms
 import Data.Int (Int32)
 
 import qualified Peasants
-import qualified Resources
+import qualified Resource
 
 newtype Farms =
   Farms
@@ -25,11 +25,11 @@ initFarms =
   { count = 1
   }
 
-farmProduction :: Farms -> Resources.Food
-farmProduction = Resources.Food . (*2) . count
+farmProduction :: Farms -> Resource.Food
+farmProduction = Resource.Food . (*5) . count
 
-farmNetProduction :: Farms -> Peasants.Peasants -> Resources.Food
-farmNetProduction f p = farmProduction f - (Resources.Food $ Peasants.peasantPopulation p)
+farmNetProduction :: Farms -> Peasants.Peasants -> Resource.Food
+farmNetProduction f p = farmProduction f - (Resource.Food $ Peasants.peasantPopulation p)
 
 incrementFarms :: Farms -> Farms
 incrementFarms f = f { count = count f + 1 }

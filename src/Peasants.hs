@@ -8,9 +8,8 @@ module Peasants
 ) where
 
 import Data.Int (Int32)
-import Debug.Trace (trace)
 
-import qualified Resources
+import qualified Resource
 
 newtype Peasants =
   Peasants
@@ -35,8 +34,8 @@ killOne p = p { count = count p - 1 }
 peasantPopulation :: Peasants -> Int32
 peasantPopulation = count
 
-processPopulation :: Peasants -> Resources.Food -> Peasants
+processPopulation :: Peasants -> Resource.Food -> Peasants
 processPopulation p food =
   if food < 0
-  then trace "foo" $ last . take ((+1) . abs $ fromIntegral food) $ iterate killOne p
+  then last . take ((+1) . abs $ fromIntegral food) $ iterate killOne p
   else p
