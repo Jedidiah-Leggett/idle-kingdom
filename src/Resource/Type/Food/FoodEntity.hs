@@ -1,11 +1,10 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Resource.Type.Food
+module Resource.Type.Food.FoodEntity
 ( Food(..)
 , FoodStorage
 , initFoodStorage
-, processFood
 ) where
 
 import Data.Int(Int32)
@@ -22,15 +21,3 @@ type FoodStorage = Resource.Resource Food
 
 initFoodStorage :: FoodStorage
 initFoodStorage = Resource.initResource (Food 0) (Food 20)
-
-processFood :: FoodStorage -> Food -> FoodStorage
-processFood storage availableFood =
-  let
-    negativeFood = availableFood < 0
-    maxFood = availableFood > 0
-    newFood
-      | availableFood < 0 = 0
-      | availableFood > Resource.maxAmount storage = Resource.maxAmount storage
-      | otherwise = availableFood
-  in
-    storage { Resource.amount = newFood }

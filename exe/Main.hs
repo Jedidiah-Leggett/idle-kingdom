@@ -1,10 +1,13 @@
 module Main where
 
+import Data.Text (unpack)
 import System.Console.ANSI (clearScreen)
 import qualified System.IO as IO
 
 import qualified Kingdom
+import qualified Resource
 import qualified Game
+import qualified Utils
 
 main :: IO ()
 main =
@@ -13,8 +16,9 @@ main =
 run :: Game.Game -> IO ()
 run g = do
   clearScreen
+  putStrLn "\r"
   print g
-  putStrLn "(F) Make Farm {10 wood} | (L) Make Lumber Mill {100 wood} | (P) Make Peasant {10 food}"
+  putStrLn . unpack $ "(F) Make Farm {" <> Utils.showText nextFarmCost <> " wood} | (L) Make Lumber Mill {" <> Utils.showText  nextLumberMillCost <>" wood} | (P) Make Peasant {10 food}"
   -- action <- getLine
   getAction <- IO.hWaitForInput IO.stdin 1000
   if getAction
@@ -33,3 +37,6 @@ run g = do
       _ -> run g
   else
     run $ Game.processGame g
+  where
+    nextFarmCost = Resource.nextFarmCost . Kingdom.food . Game.kingdom $ g
+    nextLumberMillCost = Resource.nextLumberMillCost . Kingdom.wood . Game.kingdom $ g

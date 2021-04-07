@@ -24,7 +24,7 @@ initQuest :: Quest
 initQuest =
       Quest
       { description = "Increase Population to 10"
-      , requirements = (== 10) . Peasants.populationTotal . Kingdom.population
+      , requirements = (>= 10) . Peasants.populationTotal . Kingdom.population
       , reward = id
       , rewardText = "Brown chicken brown cow!"
       }

@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Resource.Type.Wood
+module Resource.Type.Wood.WoodEntity
 ( Wood(..)
 , WoodStorage
 , initWoodStorage

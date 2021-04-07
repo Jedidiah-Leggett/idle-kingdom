@@ -5,6 +5,7 @@ module Game
 , addLumberMill
 , addPeasant
 , processGame
+, kingdom
 ) where
 
 import Data.Text (intercalate, unpack)
