@@ -1,0 +1,19 @@
+name: idle-kingdom
+
+default-extensions:
+  - OverloadedStrings
+
+executables:
+  idle-kingdom-exe:
+    main: Main.hs
+    source-dirs: exe
+    dependencies:
+      - base
+      - idle-kingdom
+      - ansi-terminal
+
+library:
+  source-dirs: src
+  dependencies:
+    - base
+    - text
