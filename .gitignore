@@ -11,6 +11,7 @@ cabal-dev
 .hpc
 .hsenv
 .cabal-sandbox/
+idle-kingdom.cabal
 cabal.sandbox.config
 *.prof
 *.aux
