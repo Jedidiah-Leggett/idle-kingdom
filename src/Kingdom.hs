@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Kingdom
-( Kingdom
+( Kingdom(..)
 , processKingdom
 , initKingdom
 , addFarm

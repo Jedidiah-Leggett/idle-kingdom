@@ -5,6 +5,7 @@ module Peasants
 , initPeasants
 , peasantPopulation
 , processPopulation
+, populationTotal
 ) where
 
 import Data.Int (Int32)
@@ -39,3 +40,6 @@ processPopulation p food =
   if food < 0
   then last . take ((+1) . abs $ fromIntegral food) $ iterate killOne p
   else p
+
+populationTotal :: Peasants -> Int32
+populationTotal = count

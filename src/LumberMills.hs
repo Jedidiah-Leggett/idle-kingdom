@@ -26,7 +26,7 @@ initLumberMills =
   }
 
 lumberMillProduction :: LumberMills -> Resource.Wood
-lumberMillProduction = Resource.Wood . (*2) . count
+lumberMillProduction = Resource.Wood . (*5) . count
 
 lumberMillNetProduction :: LumberMills -> Resource.Wood
 lumberMillNetProduction = lumberMillProduction

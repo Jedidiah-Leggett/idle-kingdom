@@ -26,7 +26,7 @@ initFarms =
   }
 
 farmProduction :: Farms -> Resource.Food
-farmProduction = Resource.Food . (*5) . count
+farmProduction = Resource.Food . (*2) . count
 
 farmNetProduction :: Farms -> Peasants.Peasants -> Resource.Food
 farmNetProduction f p = farmProduction f - (Resource.Food $ Peasants.peasantPopulation p)
