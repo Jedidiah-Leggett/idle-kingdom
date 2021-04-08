@@ -17,4 +17,4 @@ incrementLumberMills :: Resource.WoodStorage -> Resource.WoodStorage
 incrementLumberMills = Resource.incrementProduction
 
 nextLumberMillCost :: Resource.WoodStorage -> Resource.Wood
-nextLumberMillCost fs = Resource.Wood $ Utils.fib (Resource.productionCount fs) * 50
+nextLumberMillCost fs = Resource.Wood $ Utils.fib (Resource.productionCount fs) * 20

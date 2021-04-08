@@ -23,7 +23,7 @@ processFood storage availableFood =
     storage { Resource.amount = newFood }
 
 farmProduction :: Resource.FoodStorage -> Resource.Food
-farmProduction = Resource.Food . (*2) . Resource.productionCount
+farmProduction = Resource.Food . (*3) . Resource.productionCount
 
 incrementFarm :: Resource.FoodStorage -> Resource.FoodStorage
 incrementFarm = Resource.incrementProduction
